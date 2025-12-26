@@ -38,9 +38,18 @@ class Books extends ResourceController
             return $this->failValidationErrors($this->validator->getErrors());
         }
 
-        $data = $this->request->getVar();
+        $data = $this->request->getPost();
+        
+        // Handle file upload
+        $file = $this->request->getFile('cover_file');
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $newName = $file->getRandomName();
+            $file->move(FCPATH . 'uploads/cover', $newName);
+            $data['cover_url'] = base_url('uploads/cover/' . $newName);
+        }
+
         if ($this->model->insert($data)) {
-            $data->id = $this->model->getInsertID();
+            $data['id'] = $this->model->getInsertID();
             return $this->respondCreated($data);
         }
 
@@ -62,10 +71,24 @@ class Books extends ResourceController
         if (empty($data)) {
             $data = $this->request->getRawInput();
         }
+        
+        // Handle multipart/form-data for update if it's sent that way
+        if (empty($data)) {
+            $data = $this->request->getPost();
+        }
+
+        // Handle file upload for update
+        $file = $this->request->getFile('cover_file');
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $newName = $file->getRandomName();
+            $file->move(FCPATH . 'uploads/cover', $newName);
+            $data['cover_url'] = base_url('uploads/cover/' . $newName);
+        }
 
         if (empty($data)) {
             return $this->fail('No data provided for update or invalid JSON');
         }
+
         if ($this->model->update($id, $data)) {
             return $this->respond($data);
         }

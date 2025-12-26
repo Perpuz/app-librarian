@@ -118,6 +118,13 @@
     <script>
         feather.replace();
 
+        // Logout Logic
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('perpuz_token');
+            window.location.href = 'index.html';
+        });
+
         async function loadTrx() {
             try {
                 const trxs = await api.get('/transactions');

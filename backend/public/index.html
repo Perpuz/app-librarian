@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body>
 
     <div class="login-container">
@@ -19,7 +21,7 @@
                 <h3 class="fw-bold text-white">Perpuz Admin</h3>
                 <p class="text-muted">Sign in to manage library</p>
             </div>
-            
+
             <form id="loginForm">
                 <div class="mb-3">
                     <label for="username" class="form-label text-secondary">Username</label>
@@ -29,7 +31,7 @@
                     <label for="password" class="form-label text-secondary">Password</label>
                     <input type="password" class="form-control" id="password" required placeholder="Enter password">
                 </div>
-                
+
                 <div id="errorMessage" class="alert alert-danger d-none" role="alert"></div>
 
                 <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">Sign In</button>
@@ -54,15 +56,15 @@
                 // Since our API expects URL encoded or JSON. api.post sends JSON.
                 // Our Auth controller: $this->request->getVar() works for both json and form-data if properly set.
                 // CI4 Request::getVar() checks JSON body too.
-                
+
                 const result = await api.post('/auth/login', { username, password });
-                
+
                 if (result.status === 200) {
-                    localStorage.setItem('token', result.token);
+                    localStorage.setItem('perpuz_token', result.token);
                     localStorage.setItem('user', JSON.stringify(result.user));
                     window.location.href = 'dashboard.html';
                 } else {
-                     throw new Error(result.message || 'Login failed');
+                    throw new Error(result.message || 'Login failed');
                 }
             } catch (error) {
                 errorMsg.classList.remove('d-none');
@@ -71,4 +73,5 @@
         });
     </script>
 </body>
+
 </html>
