@@ -2,9 +2,8 @@ const API_BASE_URL = 'http://localhost:8081/api';
 
 const api = {
     async request(endpoint, method = 'GET', data = null) {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('perpuz_token');
         const headers = {
-            'Content-Type': 'application/json',
             'Accept': 'application/json'
         };
 
@@ -18,7 +17,13 @@ const api = {
         };
 
         if (data) {
-            config.body = JSON.stringify(data);
+            if (data instanceof FormData) {
+                config.body = data;
+                // Important: Do NOT set Content-Type for FormData
+            } else {
+                headers['Content-Type'] = 'application/json';
+                config.body = JSON.stringify(data);
+            }
         }
 
         try {
@@ -26,9 +31,8 @@ const api = {
             const result = await response.json();
 
             if (!response.ok) {
-                if (response.status === 401) {
-                    // Token expired or invalid
-                    localStorage.removeItem('token');
+                if (response.status === 401 && !window.location.pathname.includes('index.html')) {
+                    localStorage.removeItem('perpuz_token');
                     window.location.href = 'index.html';
                 }
                 throw new Error(result.messages?.error || result.message || 'Something went wrong');
