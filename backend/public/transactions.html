@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions - Perpuz Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+
+<body>
+
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar d-flex flex-column p-3 glass">
+            <div class="d-flex align-items-center mb-4 px-2">
+                <div class="bg-danger rounded-circle p-2 me-2">
+                    <i data-feather="book" class="text-white"></i>
+                </div>
+                <h5 class="m-0 fw-bold">Perpuz Admin</h5>
+            </div>
+
+            <nav class="nav flex-column gap-2">
+                <a class="nav-link rounded" href="dashboard.html">
+                    <i data-feather="grid"></i> Overview
+                </a>
+                <a class="nav-link rounded" href="books.html">
+                    <i data-feather="book-open"></i> Manage Books
+                </a>
+                <a class="nav-link rounded" href="members.html">
+                    <i data-feather="users"></i> Members
+                </a>
+                <a class="nav-link active rounded" href="transactions.html">
+                    <i data-feather="repeat"></i> Transactions
+                </a>
+                <a class="nav-link rounded text-danger mt-auto" href="#" id="logoutBtn">
+                    <i data-feather="log-out"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content w-100">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold m-0">Transactions</h2>
+                <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal"
+                    data-bs-target="#addTrxModal">
+                    <i data-feather="plus"></i> Borrow Book
+                </button>
+            </div>
+
+            <div class="card glass p-4 rounded-4">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle">
+                        <thead>
+                            <tr class="text-secondary">
+                                <th>Book Title</th>
+                                <th>Member</th>
+                                <th>Borrow Date</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trxTableBody">
+                            <tr>
+                                <td colspan="6" class="text-center">Loading transactions...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Transaction Modal -->
+    <div class="modal fade" id="addTrxModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content glass" style="background-color: var(--bg-card);">
+                <div class="modal-header border-bottom border-secondary">
+                    <h5 class="modal-title fw-bold">Borrow Book</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addTrxForm">
+                        <div class="mb-3">
+                            <label class="form-label">Member Code</label>
+                            <input type="text" class="form-control" name="member_code" required
+                                placeholder="Enter Member Code (e.g. M001)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Book Identifier</label>
+                            <input type="text" class="form-control" name="book_identifier" required
+                                placeholder="Enter Exact Title or ISBN">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Borrow Date</label>
+                            <input type="date" class="form-control" name="borrow_date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Due Date</label>
+                            <input type="date" class="form-control" name="due_date" required>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">Process Borrow</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script>
+        feather.replace();
+
+        async function loadTrx() {
+            try {
+                const trxs = await api.get('/transactions');
+                const tbody = document.getElementById('trxTableBody');
+                tbody.innerHTML = '';
+
+                if (trxs.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-secondary">No transactions found</td></tr>';
+                    return;
+                }
+
+                trxs.forEach(t => {
+                    let statusBadge = '';
+                    let actionBtn = '';
+
+                    if (t.status === 'borrowed' || t.status === 'overdue') {
+                        statusBadge = `<span class="badge bg-warning text-dark">${t.status}</span>`;
+                        actionBtn = `<button class="btn btn-sm btn-success" onclick="returnBook(${t.id})">Return</button>`;
+                    } else {
+                        statusBadge = `<span class="badge bg-success">Returned</span>`;
+                        actionBtn = `<span class="text-muted small">Completed</span>`;
+                    }
+
+                    const row = `
+                        <tr>
+                            <td class="fw-semibold">${t.book_title || 'Unknown Title'}</td>
+                            <td>${t.member_name || 'Unknown Member'}</td>
+                            <td>${t.borrow_date}</td>
+                            <td>${t.due_date}</td>
+                            <td>${statusBadge}</td>
+                            <td>${actionBtn}</td>
+                        </tr>
+                    `;
+                    tbody.insertAdjacentHTML('beforeend', row);
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        loadTrx();
+
+        document.getElementById('addTrxForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = Object.fromEntries(new FormData(e.target).entries());
+            try {
+                await api.post('/transactions', data);
+                bootstrap.Modal.getInstance(document.getElementById('addTrxModal')).hide();
+                e.target.reset();
+                loadTrx();
+            } catch (err) {
+                alert(err.message);
+            }
+        });
+
+        async function returnBook(id) {
+            if (confirm('Confirm return?')) {
+                try {
+                    await api.put('/transactions/' + id, { status: 'returned' });
+                    loadTrx();
+                } catch (err) {
+                    alert('Error: ' + err.message);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

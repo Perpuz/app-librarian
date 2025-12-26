@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Books - Perpuz Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+
+<body>
+
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar d-flex flex-column p-3 glass">
+            <div class="d-flex align-items-center mb-4 px-2">
+                <div class="bg-danger rounded-circle p-2 me-2">
+                    <i data-feather="book" class="text-white"></i>
+                </div>
+                <h5 class="m-0 fw-bold">Perpuz Admin</h5>
+            </div>
+
+            <nav class="nav flex-column gap-2">
+                <a class="nav-link rounded" href="dashboard.html">
+                    <i data-feather="grid"></i> Overview
+                </a>
+                <a class="nav-link active rounded" href="books.html">
+                    <i data-feather="book-open"></i> Manage Books
+                </a>
+                <a class="nav-link rounded" href="members.html">
+                    <i data-feather="users"></i> Members
+                </a>
+                <a class="nav-link rounded" href="transactions.html">
+                    <i data-feather="repeat"></i> Transactions
+                </a>
+                <a class="nav-link rounded text-danger mt-auto" href="#" id="logoutBtn">
+                    <i data-feather="log-out"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content w-100">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold m-0">Manage Books</h2>
+                <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal"
+                    data-bs-target="#addBookModal">
+                    <i data-feather="plus"></i> Add New Book
+                </button>
+            </div>
+
+            <!-- Books Grid -->
+            <div class="row g-4" id="booksGrid">
+                <!-- Books will be loaded here -->
+                <div class="col-12 text-center text-secondary">Loading books...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Book Modal -->
+    <div class="modal fade" id="addBookModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content glass" style="background-color: var(--bg-card);">
+                <div class="modal-header border-bottom border-secondary">
+                    <h5 class="modal-title fw-bold">Add New Book</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs mb-3 border-secondary" id="bookTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active text-white" id="manual-tab" data-bs-toggle="tab"
+                                data-bs-target="#manual" type="button" role="tab">Manual Entry</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link text-white" id="openlibrary-tab" data-bs-toggle="tab"
+                                data-bs-target="#openlibrary" type="button" role="tab">Search OpenLibrary</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="bookTabContent">
+                        <!-- Manual Entry Form -->
+                        <div class="tab-pane fade show active" id="manual" role="tabpanel">
+                            <form id="addBookForm">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Title</label>
+                                        <input type="text" class="form-control" name="title" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Author</label>
+                                        <input type="text" class="form-control" name="author">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">ISBN</label>
+                                        <input type="text" class="form-control" name="isbn">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Stock</label>
+                                        <input type="number" class="form-control" name="stock" value="1" min="0"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="mt-4 text-end">
+                                    <button type="submit" class="btn btn-primary">Save Book</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- OpenLibrary Search -->
+                        <div class="tab-pane fade" id="openlibrary" role="tabpanel">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" id="searchQuery"
+                                    placeholder="Search by title, author, or ISBN...">
+                                <button class="btn btn-primary" type="button" id="searchBtn">Search</button>
+                            </div>
+                            <div id="searchResults" class="list-group gap-2">
+                                <!-- Results here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Edit Book Modal -->
+    <div class="modal fade" id="editBookModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content glass" style="background-color: var(--bg-card);">
+                <div class="modal-header border-bottom border-secondary">
+                    <h5 class="modal-title fw-bold">Edit Book</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editBookForm">
+                        <input type="hidden" name="id" id="editBookId">
+                        <div class="mb-3">
+                            <label class="form-label">Title</label>
+                            <input type="text" class="form-control" name="title" id="editBookTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Author</label>
+                            <input type="text" class="form-control" name="author" id="editBookAuthor">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">ISBN</label>
+                            <input type="text" class="form-control" name="isbn" id="editBookIsbn">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Stock</label>
+                            <input type="number" class="form-control" name="stock" id="editBookStock" min="0" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Cover URL</label>
+                            <input type="text" class="form-control" name="cover_url" id="editBookCover">
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">Update Book</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.openEditModal = function (book) {
+            document.getElementById('editBookId').value = book.id;
+            document.getElementById('editBookTitle').value = book.title;
+            document.getElementById('editBookAuthor').value = book.author;
+            document.getElementById('editBookIsbn').value = book.isbn;
+            document.getElementById('editBookStock').value = book.stock;
+            document.getElementById('editBookCover').value = book.cover_url;
+            new bootstrap.Modal(document.getElementById('editBookModal')).show();
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('editBookForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('editBookId').value;
+                const formData = new FormData(e.target);
+                const data = Object.fromEntries(formData.entries());
+
+                try {
+                    await api.put('/books/' + id, data);
+                    bootstrap.Modal.getInstance(document.getElementById('editBookModal')).hide();
+                    loadBooks();
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
+        });
+    </script>
+    <script src="assets/js/api.js"></script>
+    <script>
+        feather.replace();
+
+        // Load Books
+        async function loadBooks() {
+            try {
+                const books = await api.get('/books');
+                const grid = document.getElementById('booksGrid');
+                grid.innerHTML = '';
+
+                if (books.length === 0) {
+                    grid.innerHTML = '<div class="col-12 text-center text-secondary">No books found in library.</div>';
+                    return;
+                }
+
+                books.forEach(book => {
+                    const card = `
+                        <div class="col-md-3">
+                            <div class="card h-100" style="background-color: #2d3748;">
+                                <div style="position: relative;">
+                                    <img src="${book.cover_url || 'https://via.placeholder.com/150x200?text=No+Cover'}" class="card-img-top" alt="${book.title}" style="height: 200px; object-fit: cover;">
+                                    <button class="btn btn-sm btn-light position-absolute top-0 end-0 m-2" onclick="openEditModal(${JSON.stringify(book).replace(/"/g, '&quot;')})">
+                                        <i data-feather="edit-2" style="width: 14px; color: #333;"></i>
+                                    </button>
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <h6 class="card-title fw-bold text-truncate" title="${book.title}">${book.title}</h6>
+                                    <p class="card-text text-secondary small mb-2">${book.author}</p>
+                                    <div class="mt-auto d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-primary">Stock: ${book.stock}</span>
+                                        <small class="text-muted">ISBN: ${book.isbn || '-'}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    grid.insertAdjacentHTML('beforeend', card);
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        loadBooks();
+
+        // Manual Add
+        document.getElementById('addBookForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                await api.post('/books', data);
+                // Close modal and reload
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addBookModal'));
+                modal.hide();
+                e.target.reset();
+                loadBooks();
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+        // OpenLibrary Search
+        document.getElementById('searchBtn').addEventListener('click', async () => {
+            const query = document.getElementById('searchQuery').value;
+            if (!query) return;
+
+            const resultsContainer = document.getElementById('searchResults');
+            resultsContainer.innerHTML = '<div class="text-center text-secondary">Searching...</div>';
+
+            try {
+                const results = await api.get(`/openlibrary/search?q=${encodeURIComponent(query)}`);
+                resultsContainer.innerHTML = '';
+
+                if (results.length === 0) {
+                    resultsContainer.innerHTML = '<div class="text-center text-secondary">No results found.</div>';
+                    return;
+                }
+
+                results.forEach(book => {
+                    const el = document.createElement('div');
+                    el.className = 'list-group-item list-group-item-action d-flex align-items-center gap-3 bg-dark text-white border-secondary';
+                    el.innerHTML = `
+                         <img src="${book.cover_url || 'https://via.placeholder.com/50'}" style="width: 50px; height: 75px; object-fit: cover;">
+                         <div class="flex-grow-1">
+                            <h6 class="mb-1">${book.title}</h6>
+                            <small class="text-secondary">${book.author} (${book.publish_year})</small>
+                         </div>
+                         <button class="btn btn-sm btn-success">Add</button>
+                    `;
+
+                    // Add Button Logic
+                    el.querySelector('button').addEventListener('click', async () => {
+                        try {
+                            await api.post('/books', {
+                                title: book.title,
+                                author: book.author,
+                                isbn: book.isbn,
+                                stock: 1, // Default stock 1
+                                cover_url: book.cover_url
+                            });
+                            alert('Book added to library!');
+                            loadBooks();
+                        } catch (err) {
+                            alert('Failed to add book: ' + err.message);
+                        }
+                    });
+
+                    resultsContainer.appendChild(el);
+                });
+
+            } catch (error) {
+                resultsContainer.innerHTML = `<div class="text-center text-danger">Error: ${error.message}</div>`;
+            }
+        });
+    </script>
+</body>
+
+</html>

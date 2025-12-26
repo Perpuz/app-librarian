@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members - Perpuz Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+
+<body>
+
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar d-flex flex-column p-3 glass">
+            <div class="d-flex align-items-center mb-4 px-2">
+                <div class="bg-danger rounded-circle p-2 me-2">
+                    <i data-feather="book" class="text-white"></i>
+                </div>
+                <h5 class="m-0 fw-bold">Perpuz Admin</h5>
+            </div>
+
+            <nav class="nav flex-column gap-2">
+                <a class="nav-link rounded" href="dashboard.html">
+                    <i data-feather="grid"></i> Overview
+                </a>
+                <a class="nav-link rounded" href="books.html">
+                    <i data-feather="book-open"></i> Manage Books
+                </a>
+                <a class="nav-link active rounded" href="members.html">
+                    <i data-feather="users"></i> Members
+                </a>
+                <a class="nav-link rounded" href="transactions.html">
+                    <i data-feather="repeat"></i> Transactions
+                </a>
+                <a class="nav-link rounded text-danger mt-auto" href="#" id="logoutBtn">
+                    <i data-feather="log-out"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content w-100">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold m-0">Library Members</h2>
+                <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal"
+                    data-bs-target="#addMemberModal">
+                    <i data-feather="plus"></i> Add New Member
+                </button>
+            </div>
+
+            <div class="card glass p-4 rounded-4">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle">
+                        <thead>
+                            <tr class="text-secondary">
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="membersTableBody">
+                            <tr>
+                                <td colspan="5" class="text-center">Loading members...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Member Modal -->
+    <div class="modal fade" id="addMemberModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content glass" style="background-color: var(--bg-card);">
+                <div class="modal-header border-bottom border-secondary">
+                    <h5 class="modal-title fw-bold">Add New Member</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addMemberForm">
+                        <div class="mb-3">
+                            <label class="form-label">Member Code</label>
+                            <input type="text" class="form-control" name="member_code" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Phone</label>
+                            <input type="text" class="form-control" name="phone">
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">Save Member</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Member Modal -->
+    <div class="modal fade" id="editMemberModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content glass" style="background-color: var(--bg-card);">
+                <div class="modal-header border-bottom border-secondary">
+                    <h5 class="modal-title fw-bold">Edit Member</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editMemberForm">
+                        <input type="hidden" name="id" id="editMemberId">
+                        <div class="mb-3">
+                            <label class="form-label">Member Code</label>
+                            <input type="text" class="form-control" name="member_code" id="editMemberCode" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" name="name" id="editMemberName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" id="editMemberEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Phone</label>
+                            <input type="text" class="form-control" name="phone" id="editMemberPhone">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" name="status" id="editMemberStatus">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">Update Member</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.openEditMember = function (member) {
+            document.getElementById('editMemberId').value = member.id;
+            document.getElementById('editMemberCode').value = member.member_code;
+            document.getElementById('editMemberName').value = member.name;
+            document.getElementById('editMemberEmail').value = member.email;
+            document.getElementById('editMemberPhone').value = member.phone;
+            document.getElementById('editMemberStatus').value = member.status;
+
+            new bootstrap.Modal(document.getElementById('editMemberModal')).show();
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('editMemberForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('editMemberId').value;
+                const formData = new FormData(e.target);
+                const data = Object.fromEntries(formData.entries());
+
+                try {
+                    await api.put('/members/' + id, data);
+                    bootstrap.Modal.getInstance(document.getElementById('editMemberModal')).hide();
+                    loadMembers();
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script>
+        feather.replace();
+
+        async function loadMembers() {
+            try {
+                const members = await api.get('/members');
+                const tbody = document.getElementById('membersTableBody');
+                tbody.innerHTML = '';
+
+                if (members.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="text-center text-secondary">No members found</td></tr>';
+                    return;
+                }
+
+                members.forEach(m => {
+                    const row = `
+                        <tr>
+                            <td><code>${m.member_code}</code></td>
+                            <td class="fw-semibold">${m.name}</td>
+                            <td>${m.email}</td>
+                            <td><span class="badge ${m.status === 'active' ? 'bg-success' : 'bg-secondary'}">${m.status}</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-2" onclick="openEditMember(${JSON.stringify(m).replace(/"/g, '&quot;')})">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteMember(${m.id})">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.insertAdjacentHTML('beforeend', row);
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        loadMembers();
+
+        document.getElementById('addMemberForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = Object.fromEntries(new FormData(e.target).entries());
+            try {
+                await api.post('/members', data);
+                bootstrap.Modal.getInstance(document.getElementById('addMemberModal')).hide();
+                e.target.reset();
+                loadMembers();
+            } catch (err) {
+                alert(err.message);
+            }
+        });
+
+        async function deleteMember(id) {
+            if (confirm('Are you sure?')) {
+                await api.delete('/members/' + id);
+                loadMembers();
+            }
+        }
+    </script>
+</body>
+
+</html>
