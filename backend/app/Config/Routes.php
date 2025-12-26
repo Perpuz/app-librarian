@@ -21,4 +21,9 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) 
         $routes->resource('transactions');
         $routes->get('openlibrary/search', 'OpenLibrary::search');
     });
+
+    // Integration Routes (Secured by Secret Header)
+    $routes->group('integration', ['namespace' => 'App\Controllers\Api'], function($routes) {
+        $routes->get('users', 'Integration::users');
+    });
 });

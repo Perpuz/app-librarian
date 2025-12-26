@@ -1,68 +1,81 @@
-# CodeIgniter 4 Application Starter
+# Perpuz - Sistem Manajemen Perpustakaan Digital
 
-## What is CodeIgniter?
+Selamat datang di repositori **Perpuz**, aplikasi manajemen perpustakaan modern berbasis web. Aplikasi ini dibangun menggunakan **CodeIgniter 4** (Backend) dan **Vanilla JS + Bootstrap 5** (Frontend).
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## 📋 Fitur Utama
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+-   **Dashboard Admin**: Ringkasan statistik dan aktivitas terbaru.
+-   **Manajemen Buku**: Tambah, edit, cari (via OpenLibrary), dan kelola stok buku.
+-   **Manajemen Anggota**: Kelola data anggota perpustakaan.
+-   **Transaksi Peminjaman**: Catat peminjaman dan pengembalian buku.
+-   **Keamanan**: Autentikasi berbasis **JWT (JSON Web Token)**.
+-   **Integrasi Eksternal**: API endpoint khusus untuk akses dari sistem lain.
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+---
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+## 🚀 Instalasi & Menjalankan Aplikasi
 
-## Installation & updates
+### Pemasangan (Setup)
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+1.  **Clone Repositori**:
+    ```bash
+    git clone https://github.com/username/perpuz.git
+    cd perpuz/backend
+    ```
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+2.  **Instal Dependensi**:
+    ```bash
+    composer install
+    ```
 
-## Setup
+3.  **Konfigurasi Environment**:
+    Salin file `env` menjadi `.env`, lalu atur koneksi database Anda:
+    ```ini
+    database.default.hostname = localhost
+    database.default.database = perpuz_db
+    database.default.username = root
+    database.default.password = ''
+    ```
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+4.  **Setup Database**:
+    ```bash
+    php spark migrate
+    php spark db:seed UserSeeder
+    ```
 
-## Important Change with index.php
+### Menjalankan Server
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+Gunakan perintah berikut untuk menjalankan server lokal:
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+```bash
+php spark serve --port 8081
+```
 
-**Please** read the user guide for a better explanation of how CI4 works!
+Akses aplikasi di browser: **[http://localhost:8081/index.html](http://localhost:8081/index.html)**
 
-## Repository Management
+---
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+## 📚 Dokumentasi API
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+Untuk dokumentasi lengkap mengenai endpoint API yang tersedia, silakan lihat di folder `docs/`:
 
-## Server Requirements
+-   [Dokumentasi API Member & Transaksi](docs/api_docs.md)
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+### Endpoint Integrasi
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+Untuk sistem eksternal yang ingin mengakses data user:
+-   **URL**: `GET /api/integration/users`
+-   **Header**: `X-INTEGRATION-SECRET: rahasia-kita-bersama`
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
+---
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+## 📂 Struktur Folder
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+-   `app/`: Logika backend (Controllers, Models, Filters).
+-   `public/`: File frontend (HTML, CSS, JS) dan aset gambar/upload.
+-   `public/uploads/`: Direktori penyimpanan cover buku.
+-   `writable/`: Log dan cache aplikasi.
+
+---
+
+*Dibuat untuk Tugas Besar Pemrograman Web.*
