@@ -36,6 +36,9 @@
                 <a class="nav-link rounded" href="transactions.html">
                     <i data-feather="repeat"></i> Transactions
                 </a>
+                <a class="nav-link rounded" href="recommendations.html">
+                    <i data-feather="star"></i> Recommendations
+                </a>
                 <a class="nav-link rounded text-danger mt-auto" href="#" id="logoutBtn">
                     <i data-feather="log-out"></i> Logout
                 </a>
@@ -94,7 +97,7 @@
                                 <th>Member</th>
                                 <th>Due Date</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>Fine</th>
                             </tr>
                         </thead>
                         <tbody id="transactionsTableBody">
@@ -146,17 +149,22 @@
                         case 'overdue': statusBadge = '<span class="badge bg-danger">Overdue</span>'; break;
                     }
 
+                    // Format fine display
+                    let fineDisplay = '';
+                    const fine = parseFloat(trx.fine || 0);
+                    if (fine > 0) {
+                        fineDisplay = `<span class="badge bg-danger">Rp ${fine.toLocaleString('id-ID')}</span>`;
+                    } else {
+                        fineDisplay = '<span class="text-muted small">No Fine</span>';
+                    }
+
                     const row = `
                         <tr>
                             <td class="fw-semibold">${trx.book_title}</td>
                             <td>${trx.member_name}</td>
                             <td>${trx.due_date}</td>
                             <td>${statusBadge}</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 32px; height: 32px; padding: 0;">
-                                    <i data-feather="more-horizontal" style="width: 16px;"></i>
-                                </button>
-                            </td>
+                            <td>${fineDisplay}</td>
                         </tr>
                     `;
                     tbody.insertAdjacentHTML('beforeend', row);

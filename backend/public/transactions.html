@@ -35,6 +35,9 @@
                 <a class="nav-link active rounded" href="transactions.html">
                     <i data-feather="repeat"></i> Transactions
                 </a>
+                <a class="nav-link rounded" href="recommendations.html">
+                    <i data-feather="star"></i> Recommendations
+                </a>
                 <a class="nav-link rounded text-danger mt-auto" href="#" id="logoutBtn">
                     <i data-feather="log-out"></i> Logout
                 </a>
@@ -62,12 +65,13 @@
                                 <th>Borrow Date</th>
                                 <th>Due Date</th>
                                 <th>Status</th>
+                                <th>Fine</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="trxTableBody">
                             <tr>
-                                <td colspan="6" class="text-center">Loading transactions...</td>
+                                <td colspan="7" class="text-center">Loading transactions...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -132,7 +136,7 @@
                 tbody.innerHTML = '';
 
                 if (trxs.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-secondary">No transactions found</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center text-secondary">No transactions found</td></tr>';
                     return;
                 }
 
@@ -148,6 +152,15 @@
                         actionBtn = `<span class="text-muted small">Completed</span>`;
                     }
 
+                    // Format fine display
+                    let fineDisplay = '';
+                    const fine = parseFloat(t.fine || 0);
+                    if (fine > 0) {
+                        fineDisplay = `<span class="badge bg-danger">Rp ${fine.toLocaleString('id-ID')}</span>`;
+                    } else {
+                        fineDisplay = '<span class="text-muted small">-</span>';
+                    }
+
                     const row = `
                         <tr>
                             <td class="fw-semibold">${t.book_title || 'Unknown Title'}</td>
@@ -155,6 +168,7 @@
                             <td>${t.borrow_date}</td>
                             <td>${t.due_date}</td>
                             <td>${statusBadge}</td>
+                            <td>${fineDisplay}</td>
                             <td>${actionBtn}</td>
                         </tr>
                     `;
