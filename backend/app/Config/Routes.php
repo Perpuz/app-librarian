@@ -32,5 +32,6 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) 
     // Integration Routes (Secured by Secret Header)
     $routes->group('integration', ['namespace' => 'App\Controllers\Api'], function($routes) {
         $routes->get('users', 'Integration::users');
+        $routes->get('books', 'Integration::books');
     });
 });
