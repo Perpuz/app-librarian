@@ -36,7 +36,7 @@ class Auth extends ResourceController
             return $this->fail('Invalid password', 400);
         }
 
-        $key = getenv('JWT_SECRET');
+        $key = env('JWT_SECRET');
         $iat = time();
         $exp = $iat + 3600; // 1 hour
 
@@ -48,7 +48,11 @@ class Auth extends ResourceController
             'username' => $user['username']
         ];
 
-        $token = JWT::encode($payload, $key, 'HS256');
+        try {
+            $token = JWT::encode($payload, $key, 'HS256');
+        } catch (\Exception $e) {
+            return $this->failServerError('Token generation failed: ' . $e->getMessage());
+        }
 
         return $this->respond([
             'status' => 200,

@@ -1,9 +1,10 @@
-const API_BASE_URL = 'http://localhost:8081/api';
+const API_BASE_URL = '/api';
 
 const api = {
     async request(endpoint, method = 'GET', data = null) {
-        const token = localStorage.getItem('perpuz_token');
+        const token = localStorage.getItem('token');
         const headers = {
+            'Content-Type': 'application/json',
             'Accept': 'application/json'
         };
 
@@ -17,22 +18,25 @@ const api = {
         };
 
         if (data) {
-            if (data instanceof FormData) {
-                config.body = data;
-                // Important: Do NOT set Content-Type for FormData
-            } else {
-                headers['Content-Type'] = 'application/json';
-                config.body = JSON.stringify(data);
-            }
+            config.body = JSON.stringify(data);
         }
 
         try {
             const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
-            const result = await response.json();
+            const text = await response.text();
+            let result;
+
+            try {
+                result = JSON.parse(text);
+            } catch (e) {
+                console.error("Invalid JSON response:", text);
+                throw new Error("Server Error: " + text.substring(0, 50) + "...");
+            }
 
             if (!response.ok) {
-                if (response.status === 401 && !window.location.pathname.includes('index.html')) {
-                    localStorage.removeItem('perpuz_token');
+                if (response.status === 401) {
+                    // Token expired or invalid
+                    localStorage.removeItem('token');
                     window.location.href = 'index.html';
                 }
                 throw new Error(result.messages?.error || result.message || 'Something went wrong');

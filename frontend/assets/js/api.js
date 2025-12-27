@@ -23,7 +23,15 @@ const api = {
 
         try {
             const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
-            const result = await response.json();
+            const text = await response.text();
+            let result;
+
+            try {
+                result = JSON.parse(text);
+            } catch (e) {
+                console.error("Invalid JSON response:", text);
+                throw new Error("Server Error: " + text.substring(0, 50) + "...");
+            }
 
             if (!response.ok) {
                 if (response.status === 401) {

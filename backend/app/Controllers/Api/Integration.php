@@ -13,7 +13,7 @@ class Integration extends ResourceController
     {
         // 1. Check Secret Header
         $secret = $this->request->getHeaderLine('X-INTEGRATION-SECRET');
-        $envSecret = getenv('INTEGRATION_SECRET');
+        $envSecret = env('INTEGRATION_SECRET');
 
         if (empty($secret) || $secret !== $envSecret) {
             return $this->failForbidden('Invalid or missing integration secret.');
@@ -24,10 +24,20 @@ class Integration extends ResourceController
         // Only select safe fields
         $users = $model->select('id, username, created_at')->findAll();
 
-        return $this->respond([
-            'status' => 200,
-            'count' => count($users),
-            'data' => $users
-        ]);
+        return $this->respond($users);
+    }
+
+    public function books()
+    {
+        // 1. Check Secret Header
+        $secret = $this->request->getHeaderLine('X-INTEGRATION-SECRET');
+        $envSecret = env('INTEGRATION_SECRET');
+
+        if (empty($secret) || $secret !== $envSecret) {
+            return $this->failForbidden('Invalid or missing integration secret.');
+        }
+
+        $model = new \App\Models\BookModel();
+        return $this->respond($model->findAll());
     }
 }
