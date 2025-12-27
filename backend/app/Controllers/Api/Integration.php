@@ -40,4 +40,18 @@ class Integration extends ResourceController
         $model = new \App\Models\BookModel();
         return $this->respond($model->findAll());
     }
+
+    public function books()
+    {
+        // 1. Check Secret Header
+        $secret = $this->request->getHeaderLine('X-INTEGRATION-SECRET');
+        $envSecret = getenv('INTEGRATION_SECRET');
+
+        if (empty($secret) || $secret !== $envSecret) {
+            return $this->failForbidden('Invalid or missing integration secret.');
+        }
+
+        $model = new \App\Models\BookModel();
+        return $this->respond($model->findAll());
+    }
 }
