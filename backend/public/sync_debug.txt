@@ -1,0 +1,8 @@
+2025-12-27 11:19:17 - Code: 200 - Err:  - Out: {"success":true,"count":1,"data":[{"id":1,"nim":"1
+2025-12-27 11:19:20 - Code: 200 - Err:  - Out: {"success":true,"count":1,"data":[{"id":1,"nim":"1
+2025-12-27 11:19:52 - Code: 200 - Err:  - Out: {"success":true,"count":1,"data":[{"id":1,"nim":"1
+2025-12-27 11:20:32 - Code: 200 - Err:  - Out: {"success":true,"count":2,"data":[{"id":2,"nim":"3
+2025-12-27 11:20:36 - Code: 200 - Err:  - Out: {"success":true,"count":2,"data":[{"id":2,"nim":"3
+2025-12-27 11:23:37 - Code: 200 - Err:  - Out: {"success":true,"count":2,"data":[{"id":2,"nim":"3
+2025-12-27 11:23:41 - Code: 200 - Err:  - Out: {"success":true,"count":2,"data":[{"id":2,"nim":"3
+2025-12-27 11:33:09 - Code: 200 - Err:  - Out: {"success":true,"count":2,"data":[{"id":2,"nim":"3

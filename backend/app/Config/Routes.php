@@ -11,7 +11,15 @@ $routes->get('/', function() {
 
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
     $routes->post('auth/login', 'Auth::login');
+    $routes->options('auth/login', function() {
+        return response()->setStatusCode(200);
+    });
     $routes->post('auth/register', 'Auth::register');
+
+    // Handle all other OPTIONS requests
+    $routes->options('(:any)', function() {
+        return response()->setStatusCode(200);
+    });
 
     // Public recommendation endpoint
     $routes->get('recommendations/daily', 'Recommendations::daily');
@@ -32,5 +40,6 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) 
     // Integration Routes (Secured by Secret Header)
     $routes->group('integration', ['namespace' => 'App\Controllers\Api'], function($routes) {
         $routes->get('users', 'Integration::users');
+        $routes->get('books', 'Integration::books');
     });
 });

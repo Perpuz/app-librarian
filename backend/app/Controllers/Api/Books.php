@@ -38,7 +38,15 @@ class Books extends ResourceController
             return $this->failValidationErrors($this->validator->getErrors());
         }
 
-        $data = $this->request->getPost();
+        try {
+            $data = $this->request->getJSON(true);
+        } catch (\Exception $e) {
+            $data = null;
+        }
+
+        if (empty($data)) {
+            $data = $this->request->getPost();
+        }
         
         // Handle file upload
         $file = $this->request->getFile('cover_file');
