@@ -14,7 +14,8 @@ const api = {
 
         const config = {
             method,
-            headers
+            headers,
+            cache: 'no-store'
         };
 
         if (data) {

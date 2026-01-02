@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Perpuz Admin</title>
+    <title>Login - Perpuz</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -16,11 +17,11 @@
     <div class="login-container">
         <div class="card login-card shadow-lg border-0">
             <div class="text-center mb-4">
-                <div class="bg-primary-brand rounded-circle d-inline-flex p-3 mb-3">
-                    <i data-feather="book" class="text-white" style="width: 24px; height: 24px;"></i>
+                <div class="bg-primary-brand rounded-circle d-inline-flex p-3 mb-3" style="width: 60px; height: 60px; align-items: center; justify-content: center;">
+                     <i class="fas fa-book-reader text-white fs-2"></i>
                 </div>
-                <h3 class="fw-bold text-dark">Perpuz Admin</h3>
-                <p class="text-muted">Sign in to manage library</p>
+                <h3 class="fw-bold text-dark" style="font-family: 'Instrument Sans'; letter-spacing: -0.5px;">Perpuz</h3>
+                <p class="text-secondary small">Sign in to manage library</p>
             </div>
             
             <form id="loginForm">
@@ -39,8 +40,6 @@
             </form>
         </div>
     </div>
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script>feather.replace();</script>
 
     <!-- Scripts -->
     <script src="assets/js/api.js"></script>
@@ -56,10 +55,6 @@
             errorMsg.innerText = '';
 
             try {
-                // Since our API expects URL encoded or JSON. api.post sends JSON.
-                // Our Auth controller: $this->request->getVar() works for both json and form-data if properly set.
-                // CI4 Request::getVar() checks JSON body too.
-                
                 const result = await api.post('/auth/login', { username, password });
                 
                 if (result.status === 200) {

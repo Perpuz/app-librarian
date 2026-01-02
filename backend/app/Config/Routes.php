@@ -5,14 +5,14 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-// Default Route to Login
-$routes->get('/', 'Home::index');
-
-// Admin Routes
-$routes->get('/dashboard', 'Admin::dashboard');
-$routes->get('/books', 'Admin::books');
-$routes->get('/members', 'Admin::members');
-$routes->get('/transactions', 'Admin::transactions');
+// Default Route to API Message
+$routes->get('/', function() {
+    return response()->setJSON([
+        'status' => 'ok',
+        'message' => 'Perpuz Librarian Backend API',
+        'version' => '1.0'
+    ]);
+});
 
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
     $routes->post('auth/login', 'Auth::login');
