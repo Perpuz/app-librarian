@@ -14,28 +14,33 @@
 <body>
 
     <div class="login-container">
-        <div class="card login-card glass shadow-lg">
+        <div class="card login-card shadow-lg border-0">
             <div class="text-center mb-4">
-                <h3 class="fw-bold text-white">Perpuz Admin</h3>
+                <div class="bg-primary-brand rounded-circle d-inline-flex p-3 mb-3">
+                    <i data-feather="book" class="text-white" style="width: 24px; height: 24px;"></i>
+                </div>
+                <h3 class="fw-bold text-dark">Perpuz Admin</h3>
                 <p class="text-muted">Sign in to manage library</p>
             </div>
             
             <form id="loginForm">
                 <div class="mb-3">
-                    <label for="username" class="form-label text-secondary">Username</label>
-                    <input type="text" class="form-control" id="username" required placeholder="Enter username">
+                    <label for="username" class="form-label text-secondary fw-semibold">Username</label>
+                    <input type="text" class="form-control py-2" id="username" required placeholder="Enter username">
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label text-secondary">Password</label>
-                    <input type="password" class="form-control" id="password" required placeholder="Enter password">
+                    <label for="password" class="form-label text-secondary fw-semibold">Password</label>
+                    <input type="password" class="form-control py-2" id="password" required placeholder="Enter password">
                 </div>
                 
                 <div id="errorMessage" class="alert alert-danger d-none" role="alert"></div>
 
-                <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">Sign In</button>
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold bg-primary-brand border-0">Sign In</button>
             </form>
         </div>
     </div>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>feather.replace();</script>
 
     <!-- Scripts -->
     <script src="assets/js/api.js"></script>

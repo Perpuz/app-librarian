@@ -1,141 +1,159 @@
 :root {
-    --bg-dark: #0f172a;
-    --bg-card: #1e293b;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --primary-color: #6366f1; /* Indigo 500 */
-    --primary-hover: #4f46e5;
-    --danger-color: #ef4444;
-    --success-color: #22c55e;
-    --warning-color: #eab308;
-    --glass-bg: rgba(30, 41, 59, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --primary-color: #E53935;       /* Red Brand */
+    --primary-hover: #D32F2F;
+    --secondary-color: #1F2937;     /* Dark Text */
+    --accent-color: #4CAF50;        /* Green Success/Avatar */
+    --bg-color: #F3F4F6;            /* Light Gray Page BG */
+    --card-bg: #FFFFFF;             /* White Card BG */
+    --text-color: #374151;          /* Gray 700 */
+    --text-muted: #6B7280;          /* Gray 500 */
+    --sidebar-width: 250px;
+    --border-color: #E5E7EB;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 body {
-    background-color: var(--bg-dark);
-    color: var(--text-primary);
     font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    overflow-x: hidden;
 }
 
-/* Glassmorphism Utilities */
-.glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border);
+/* Layout */
+.d-flex {
+    display: flex;
 }
 
-.card {
-    background-color: var(--bg-card);
-    border: 1px solid var(--glass-border);
-    color: var(--text-primary);
-}
-
-.form-control, .form-select {
-    background-color: #334155;
-    border: 1px solid #475569;
-    color: var(--text-primary);
-}
-
-.form-control:focus, .form-select:focus {
-    background-color: #334155;
-    border-color: var(--primary-color);
-    color: var(--text-primary);
-    box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-}
-
-.btn-primary:hover {
-    background-color: var(--primary-hover);
-    border-color: var(--primary-hover);
-}
-
-/* Sidebar */
 .sidebar {
+    width: var(--sidebar-width);
     height: 100vh;
-    background-color: var(--bg-dark); /* Or slightly different */
-    border-right: 1px solid var(--glass-border);
+    background-color: var(--card-bg);
+    border-right: 1px solid var(--border-color);
     position: fixed;
     top: 0;
     left: 0;
-    width: 250px;
     z-index: 1000;
+    transition: all 0.3s ease;
 }
 
 .main-content {
-    margin-left: 250px;
-    padding: 20px;
+    margin-left: var(--sidebar-width);
+    padding: 2rem;
+    width: calc(100% - var(--sidebar-width));
+    min-height: 100vh;
 }
 
+/* Sidebar Nav */
 .nav-link {
-    color: var(--text-secondary);
-    padding: 12px 20px;
+    color: var(--text-color);
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.25rem;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.75rem;
+    transition: all 0.2s;
 }
 
-.nav-link:hover, .nav-link.active {
-    color: var(--text-primary);
-    background: linear-gradient(90deg, rgba(99,102,241,0.1) 0%, rgba(99,102,241,0) 100%);
-    border-left: 4px solid var(--primary-color);
+.nav-link:hover {
+    color: var(--primary-color);
+    background-color: #FEF2F2; /* Very light red */
+}
+
+.nav-link.active {
+    background-color: #F0FDF4; /* Very light green - per screenshot hint? Or maybe light gray? Screenshot showed Overview active. */
+    /* Let's stick to brand red or the green accent? User said "pewarnaan webnya juga tolong disamakan". Screenshot active item "Overview" had green accent. */
+    color: var(--accent-color); /* Green text */
+    background-color: #F0FDF4; /* Light Green BG */
+    border-left: 3px solid var(--accent-color);
+}
+.nav-link.active i {
+    color: var(--accent-color);
 }
 
 .nav-link i {
     width: 20px;
+    height: 20px;
+    color: var(--text-muted);
 }
 
-/* Table */
-.table {
-    color: var(--text-primary);
+/* Cards */
+.card, .stat-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem; /* rounded-xl */
+    box-shadow: var(--shadow-sm);
 }
 
-.table-dark {
-    --bs-table-bg: var(--bg-card);
-    --bs-table-striped-bg: #2d3748;
+.glass {
+    /* Legacy override */
+    background: var(--card-bg) !important;
+    backdrop-filter: none !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: var(--shadow-sm) !important;
+    color: var(--text-color) !important;
 }
 
-.table > :not(caption) > * > * {
-    background-color: transparent;
-    border-bottom-color: var(--glass-border);
-}
-
-/* Dashboard Cards */
+/* Stats */
 .stat-card {
-    background-color: var(--bg-card);
-    border-radius: 12px;
-    padding: 20px;
-    border: 1px solid var(--glass-border);
+    padding: 1.5rem;
 }
 
 .stat-title {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
 }
 
 .stat-value {
     font-size: 2rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--secondary-color);
 }
 
-/* Login Page specific */
+/* Tables */
+.table {
+    margin-bottom: 0;
+    color: var(--text-color);
+}
+.table thead th {
+    background-color: #F9FAFB;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-color);
+}
+.table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    color: #333333 !important;
+}
+.table-hover tbody tr:hover {
+    background-color: #F9FAFB;
+}
+
+/* Auth Pages */
 .login-container {
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(circle at top right, #1e1b4b, var(--bg-dark));
+    background-color: var(--bg-color);
 }
 
 .login-card {
     width: 100%;
     max-width: 400px;
     padding: 2rem;
-    border-radius: 1rem;
+    background-color: var(--card-bg);
 }
+
+/* Typography Helpers */
+.text-primary-brand { color: var(--primary-color) !important; }
+.bg-primary-brand { background-color: var(--primary-color) !important; }

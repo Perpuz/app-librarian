@@ -58,6 +58,8 @@ class Books extends ResourceController
 
         if ($this->model->insert($data)) {
             $data['id'] = $this->model->getInsertID();
+            // Sync to Member App
+            $this->syncToMember($data);
             return $this->respondCreated($data);
         }
 
@@ -110,5 +112,39 @@ class Books extends ResourceController
             return $this->respondDeleted(['id' => $id]);
         }
         return $this->failNotFound('No book found with id ' . $id);
+    }
+
+    private function syncToMember($bookData)
+    {
+        try {
+            $client = \Config\Services::curlrequest();
+            $url = getenv('MEMBER_APP_URL') . '/api/integration/books';
+            
+            // Adjust payload keys to match Member App expectation
+            $payload = [
+                'title' => $bookData['title'],
+                'author' => $bookData['author'] ?? '',
+                'isbn' => $bookData['isbn'] ?? '',
+                'stock' => $bookData['stock'],
+                'publisher' => 'Unknown', // Librarian app doesn't have publisher field yet
+                'publication_year' => date('Y'),
+                'cover_url' => $bookData['cover_url'] ?? null
+            ];
+
+            $response = $client->post($url, [
+                'headers' => [
+                    'X-INTEGRATION-SECRET' => getenv('INTEGRATION_SECRET'),
+                    'Accept' => 'application/json'
+                ],
+                'json' => $payload,
+                'http_errors' => false,
+                'verify' => false
+            ]);
+            
+            // Optional: Log response
+        } catch (\Exception $e) {
+            // Silently fail or log
+            log_message('error', 'Sync Book Failed: ' . $e->getMessage());
+        }
     }
 }

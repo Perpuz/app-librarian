@@ -14,9 +14,9 @@
 
     <div class="d-flex">
         <!-- Sidebar -->
-        <div class="sidebar d-flex flex-column p-3 glass">
+        <div class="sidebar d-flex flex-column p-3">
             <div class="d-flex align-items-center mb-4 px-2">
-                <div class="bg-danger rounded-circle p-2 me-2">
+                <div class="bg-primary-brand rounded-circle p-2 me-2">
                     <i data-feather="book" class="text-white"></i>
                 </div>
                 <h5 class="m-0 fw-bold">Perpuz Admin</h5>
@@ -63,7 +63,7 @@
     <!-- Add Book Modal -->
     <div class="modal fade" id="addBookModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content glass" style="background-color: var(--bg-card);">
+            <div class="modal-content border-0 shadow" style="background-color: var(--card-bg);">
                 <div class="modal-header border-bottom border-secondary">
                     <h5 class="modal-title fw-bold">Add New Book</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
@@ -217,7 +217,7 @@
                 books.forEach(book => {
                     const card = `
                         <div class="col-md-3">
-                            <div class="card h-100" style="background-color: #2d3748;">
+                            <div class="card h-100 border shadow-sm">
                                 <div style="position: relative;">
                                     <img src="${book.cover_url || 'https://via.placeholder.com/150x200?text=No+Cover'}" class="card-img-top" alt="${book.title}" style="height: 200px; object-fit: cover;">
                                     <button class="btn btn-sm btn-light position-absolute top-0 end-0 m-2" onclick="openEditModal(${JSON.stringify(book).replace(/"/g, '&quot;')})">
@@ -281,7 +281,7 @@
 
                 results.forEach(book => {
                     const el = document.createElement('div');
-                    el.className = 'list-group-item list-group-item-action d-flex align-items-center gap-3 bg-dark text-white border-secondary';
+                    el.className = 'list-group-item list-group-item-action d-flex align-items-center gap-3 border popup-hover';
                     el.innerHTML = `
                          <img src="${book.cover_url || 'https://via.placeholder.com/50'}" style="width: 50px; height: 75px; object-fit: cover;">
                          <div class="flex-grow-1">

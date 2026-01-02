@@ -1,0 +1,24 @@
+2026-01-01 13:50:48 - UPDATE Request ID: 5
+2026-01-01 13:50:48 - Data: {"id":"5","member_code":"12345678","name":"Saskehhh","email":"saskeh@gmail.com","phone":"","status":"active"}
+ - Success Update
+2026-01-01 13:51:05 - UPDATE Request ID: 5
+2026-01-01 13:51:05 - Data: {"id":"5","member_code":"12345678","name":"Saskehhh","email":"saskeh@gmail.com","phone":"","status":"active"}
+ - Success Update
+2026-01-01 13:53:24 - UPDATE Request ID: 5
+2026-01-01 13:53:24 - Data: {"id":"5","member_code":"12345678","name":"Saskehhhh","email":"saskeh@gmail.com","phone":"","status":"active"}
+ - Success Update
+2026-01-01 13:54:47 - UPDATE Request ID: 5
+2026-01-01 13:54:47 - Data: {"id":"5","member_code":"12345678","name":"Saskehhh","email":"saskeh@gmail.com","phone":"","status":"active"}
+ - Success Update
+2026-01-01 13:58:09 - UPDATE Request ID: 5
+2026-01-01 13:58:09 - Data: {"id":"5","member_code":"12345678","name":"Susuke","email":"saskeh@gmail.com","phone":"","status":"active"}
+ - Success Update Local
+ - Sync Push to http://127.0.0.1:8000/api/integration/users/12345678: Code 200
+2026-01-01 13:58:32 - UPDATE Request ID: 5
+2026-01-01 13:58:32 - Data: {"id":"5","member_code":"12345678","name":"Susuke","email":"susuke@gmail.com","phone":"","status":"active"}
+ - Success Update Local
+ - Sync Push to http://127.0.0.1:8000/api/integration/users/12345678: Code 200
+2026-01-02 08:17:06 - DELETE Request ID: 6
+ - Success Delete
+2026-01-02 08:17:15 - DELETE Request ID: 4
+ - Success Delete

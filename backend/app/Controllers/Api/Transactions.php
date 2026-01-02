@@ -157,6 +157,9 @@ class Transactions extends ResourceController
         $activeMembers = $memberModel->where('status', 'active')->countAllResults();
         $totalTransactions = $this->model->countAll();
         
+        // Calculate Total Fines (Collected/Recorded)
+        $totalFines = $this->model->selectSum('fine')->first()['fine'] ?? 0;
+        
         $recentTransactions = $this->model->select('transactions.*, books.title as book_title, members.name as member_name')
                             ->join('books', 'books.id = transactions.book_id')
                             ->join('members', 'members.id = transactions.member_id')
@@ -168,6 +171,7 @@ class Transactions extends ResourceController
             'total_books' => $totalBooks,
             'active_members' => $activeMembers,
             'total_transactions' => $totalTransactions,
+            'total_fines' => $totalFines,
             'recent_transactions' => $recentTransactions
         ]);
     }

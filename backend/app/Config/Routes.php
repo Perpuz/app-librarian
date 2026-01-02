@@ -5,9 +5,14 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', function() {
-    return redirect()->to('index.html');
-});
+// Default Route to Login
+$routes->get('/', 'Home::index');
+
+// Admin Routes
+$routes->get('/dashboard', 'Admin::dashboard');
+$routes->get('/books', 'Admin::books');
+$routes->get('/members', 'Admin::members');
+$routes->get('/transactions', 'Admin::transactions');
 
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
     $routes->post('auth/login', 'Auth::login');
@@ -41,5 +46,8 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) 
     $routes->group('integration', ['namespace' => 'App\Controllers\Api'], function($routes) {
         $routes->get('users', 'Integration::users');
         $routes->get('books', 'Integration::books');
+        // Sync Endpoints (Push from Member App)
+        $routes->post('sync/member', 'Integration::sync_member');
+        $routes->post('sync/transaction', 'Integration::sync_transaction');
     });
 });

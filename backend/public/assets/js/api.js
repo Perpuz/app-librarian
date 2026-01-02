@@ -1,4 +1,4 @@
-const API_BASE_URL = '/api';
+const API_BASE_URL = 'http://localhost:8081/api';
 
 const api = {
     async request(endpoint, method = 'GET', data = null) {
@@ -14,7 +14,8 @@ const api = {
 
         const config = {
             method,
-            headers
+            headers,
+            cache: 'no-store'
         };
 
         if (data) {
